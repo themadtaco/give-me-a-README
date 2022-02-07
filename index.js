@@ -7,7 +7,7 @@ const generateReadme = require('./utils/generateMarkdown');
 const questions = [
     {
         type: 'input',
-        name: 'name',
+        name: 'title',
         message: 'What is your project name?',
         validate: nameInput => {
             if (nameInput) {
@@ -21,7 +21,20 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./' + fileName + '', data, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'File Created!'
+            });
+        });
+    });
+};
 
 // TODO: Create a function to initialize app
 function init() {
@@ -29,4 +42,5 @@ function init() {
 }
 
 // Function call to initialize app
-init();
+init()
+    .then(writeToFile(README.md, generateReadme));
